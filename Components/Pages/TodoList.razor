@@ -1,0 +1,41 @@
+﻿@page "/todo"
+@rendermode InteractiveServer
+@using Plk.Blazor.DragDrop
+@using ServerAppDragDrop.Data
+
+<h3>Todo List</h3>
+
+<input @bind="newTodo" placeholder="Enter a new todo" />
+<button @onclick="AddTodo">Add</button>
+
+<hr />
+
+<Dropzone Items="MyToDoList">
+    <Todo OnRemoveClick="RemoveTodo" Item="@context"></Todo>
+</Dropzone>
+
+@code {
+    private string? newTodo;
+
+    private void AddTodo()
+    {
+        if (!string.IsNullOrWhiteSpace(newTodo))
+        {
+            MyToDoList.Add(new TodoItem { Title = newTodo });
+            newTodo = string.Empty;
+        }
+    }
+
+    private void RemoveTodo(TodoItem item)
+    {
+        MyToDoList.Remove(item);
+    }
+
+    public List<TodoItem> MyToDoList = new List<TodoItem>()
+    {
+            new TodoItem(){Title = "Ingrid"},
+            new TodoItem(){Title = "Leif"},
+            new TodoItem(){Title = "Kiba"},
+            new TodoItem(){Title = "Bravo"},
+    };
+}
